@@ -19,13 +19,15 @@ def init():
     for bladeId in PowerTable:
         GPIO.setup( PowerTable[ bladeId ], GPIO.OUT )
 
+def _SetDefaultXMLAttr(response):
+    etree.SubElement(response, 'CompletionCode').text = 'Success'
+    etree.SubElement(response, 'statusDescription').text = ''
+    etree.SubElement(response, 'apiVersion').text = '1'
 
 def SetBladeAttentionLEDOn( bladeId ):
     GPIO.output( AttentionLEDTable[ bladeId ], True)
     response = etree.Element('BladeResponse')
-    etree.SubElement(response, 'CompletionCode').text = 'Success'
-    etree.SubElement(response, 'statusDescription').text = ''
-    etree.SubElement(response, 'apiVersion').text = '1'
+    _SetDefaultXMLAttr(response)
     etree.SubElement(response, 'bladeNumber').text = bladeId
     return etree.tostring(response, pretty_print=True)
 
@@ -34,18 +36,14 @@ def SetAllBladesAttentionLEDOn():
     for bladeId in AttentionLEDTable:
         GPIO.output( AttentionLEDTable[ bladeId ], True)
         blade = etree.SubElement(response, 'BladeResponse')
-        etree.SubElement(blade, 'CompletionCode').text = 'Success'
-        etree.SubElement(blade, 'statusDescription').text = ''
-        etree.SubElement(blade, 'apiVersion').text = '1'
+        _SetDefaultXMLAttr(response)
         etree.SubElement(blade, 'bladeNumber').text = bladeId
     return etree.tostring(response, pretty_print=True)
 
 def SetBladeAttentionLEDOff( bladeId ):
     GPIO.output( AttentionLEDTable[ bladeId ], False)
     response = etree.Element('BladeResponse')
-    etree.SubElement(response, 'CompletionCode').text = 'Success'
-    etree.SubElement(response, 'statusDescription').text = ''
-    etree.SubElement(response, 'apiVersion').text = '1'
+    _SetDefaultXMLAttr(response)
     etree.SubElement(response, 'bladeNumber').text = bladeId
     return etree.tostring(response, pretty_print=True)
 
@@ -54,9 +52,7 @@ def SetAllBladesAttentionLEDOff():
     for bladeId in AttentionLEDTable:
         GPIO.output( AttentionLEDTable[ bladeId ], False)
         blade = etree.SubElement(response, 'BladeResponse')
-        etree.SubElement(blade, 'CompletionCode').text = 'Success'
-        etree.SubElement(blade, 'statusDescription').text = ''
-        etree.SubElement(blade, 'apiVersion').text = '1'
+        _SetDefaultXMLAttr(response)
         etree.SubElement(blade, 'bladeNumber').text = bladeId
     return etree.tostring(response, pretty_print=True)
 
@@ -70,9 +66,7 @@ def GetAllPowerState():
             PowerState = 'OFF'
         power = etree.SubElement(response, 'PowerStateResponse')
         blade = etree.SubElement(power, 'bladeResponse')
-        etree.SubElement(blade, 'CompletionCode').text = 'Success'
-        etree.SubElement(blade, 'statusDescription').text = ''
-        etree.SubElement(blade, 'apiVersion').text = '1'
+        _SetDefaultXMLAttr(response)
         etree.SubElement(blade, 'bladeNumber').text = bladeId
         etree.SubElement(power, 'powerState').text = PowerState
     return etree.tostring(response, pretty_print=True)
@@ -85,9 +79,7 @@ def GetPowerState(bladeId):
     else:
         PowerState = 'OFF'
     blade = etree.SubElement(response, 'bladeResponse')
-    etree.SubElement(blade, 'CompletionCode').text = 'Success'
-    etree.SubElement(blade, 'statusDescription').text = ''
-    etree.SubElement(blade, 'apiVersion').text = '1'
+    _SetDefaultXMLAttr(response)
     etree.SubElement(blade, 'bladeNumber').text = bladeId
     etree.SubElement(response, 'powerState').text = PowerState
     return etree.tostring(response, pretty_print=True)
@@ -95,18 +87,14 @@ def GetPowerState(bladeId):
 def SetPowerOn(bladeId):
     GPIO.output( PowerTable[ bladeId ], True)
     response = etree.Element('BladeResponse')
-    etree.SubElement(response, 'CompletionCode').text = 'Success'
-    etree.SubElement(response, 'statusDescription').text = ''
-    etree.SubElement(response, 'apiVersion').text = '1'
+    _SetDefaultXMLAttr(response)
     etree.SubElement(response, 'bladeNumber').text = bladeId
     return etree.tostring(response, pretty_print=True)
 
 def SetPowerOff(bladeId):
     GPIO.output( PowerTable[ bladeId ], False)
     response = etree.Element('BladeResponse')
-    etree.SubElement(response, 'CompletionCode').text = 'Success'
-    etree.SubElement(response, 'statusDescription').text = ''
-    etree.SubElement(response, 'apiVersion').text = '1'
+    _SetDefaultXMLAttr(response)
     etree.SubElement(response, 'bladeNumber').text = bladeId
     return etree.tostring(response, pretty_print=True)
 
@@ -115,9 +103,7 @@ def SetAllPowerOn():
     for bladeId in PowerTable:
         GPIO.output( PowerTable[ bladeId ], True)
         blade = etree.SubElement(response, 'BladeResponse')
-        etree.SubElement(blade, 'CompletionCode').text = 'Success'
-        etree.SubElement(blade, 'statusDescription').text = ''
-        etree.SubElement(blade, 'apiVersion').text = '1'
+        _SetDefaultXMLAttr(response)
         etree.SubElement(blade, 'bladeNumber').text = bladeId
     return etree.tostring(response, pretty_print=True)
 
@@ -126,9 +112,7 @@ def SetAllPowerOff():
     for bladeId in PowerTable:
         GPIO.output( PowerTable[ bladeId ], False)
         blade = etree.SubElement(response, 'BladeResponse')
-        etree.SubElement(blade, 'CompletionCode').text = 'Success'
-        etree.SubElement(blade, 'statusDescription').text = ''
-        etree.SubElement(blade, 'apiVersion').text = '1'
+        _SetDefaultXMLAttr(response)
         etree.SubElement(blade, 'bladeNumber').text = bladeId
     return etree.tostring(response, pretty_print=True)
 
