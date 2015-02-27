@@ -4,23 +4,15 @@ from flask import Flask, request
 app = Flask(__name__)
 
 if '-m' in sys.argv:
-    mock = 1
-else:
-    mock = 0
-
-
-if mock == 1:
     import service_mock as service
 else:
     import service_gpio as service
 
-
 @app.route("/SetBladeAttentionLEDOn")
 def SetBladeAttentionLEDOn():
     if 'bladeId' in request.args:
-        return service.SetBladeAttentionLEDOn( request.args['bladeId'] )
-    else:
-        return 'Set bladeId'
+        return service.SetBladeAttentionLEDOn( request.args['bladeId'] )    
+    return 'Set bladeId'
 
 @app.route("/SetAllBladesAttentionLEDOn")
 def SetAllBladesAttentionLEDOn():
@@ -29,9 +21,8 @@ def SetAllBladesAttentionLEDOn():
 @app.route("/SetBladeAttentionLEDOff")
 def SetBladeAttentionLEDOff():
     if 'bladeId' in request.args:
-        return service.SetBladeAttentionLEDOff( request.args['bladeId'] )
-    else:
-        return 'Set bladeId'
+        return service.SetBladeAttentionLEDOff( request.args['bladeId'] )    
+    return 'Set bladeId'
 
 @app.route("/SetAllBladesAttentionLEDOff")
 def SetAllBladesAttentionLEDOff():
@@ -44,23 +35,20 @@ def GetAllPowerState():
 @app.route("/GetPowerState")
 def GetPowerState():
     if 'bladeId' in request.args:
-        return service.GetPowerState( request.args['bladeId'] )
-    else:
-        return 'Set bladeId'
+        return service.GetPowerState( request.args['bladeId'] )    
+    return 'Set bladeId'
 
 @app.route("/SetPowerOn")
 def SetPowerOn():
     if 'bladeId' in request.args:
-        return service.SetPowerOn( request.args['bladeId'] )
-    else:
-        return 'Set bladeId'
+        return service.SetPowerOn( request.args['bladeId'] )    
+    return 'Set bladeId'
 
 @app.route("/SetPowerOff")
 def SetPowerOff():
     if 'bladeId' in request.args:
-        return service.SetPowerOff( request.args['bladeId'] )
-    else:
-        return 'Set bladeId'
+        return service.SetPowerOff( request.args['bladeId'] )    
+    return 'Set bladeId'
 
 @app.route("/SetAllPowerOn")
 def SetAllPowerOn():
