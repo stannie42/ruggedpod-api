@@ -1,6 +1,10 @@
 
-import RPi.GPIO as GPIO
 from lxml import etree
+
+from common import importutils
+
+
+GPIO = importutils.try_import('RPi.GPIO')
 
 AttentionLEDTable = {'1' : 7,
                      '2' : 12

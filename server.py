@@ -1,11 +1,13 @@
 
 import sys
 from flask import Flask, request
+from common import importutils
 app = Flask(__name__)
 
 if '-m' in sys.argv:
     import service_mock as service
 else:
+    importutils.exit_if_module_missing('RPi')
     import service_gpio as service
 
 
