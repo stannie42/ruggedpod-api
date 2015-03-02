@@ -1,5 +1,7 @@
-
+import mock
 from lxml import etree
+
+import service_gpio
 
 AttentionLEDTable={'1' : 1,
                    '2' : 2,
@@ -24,53 +26,23 @@ PowerState = { '1' : 'ON',
 def init():
     print "Mock Ready"
 
+@mock.patch('service_gpio.GPIO.output')
+def SetBladeAttentionLEDOn(bladeId, mock_gpio_output):
+    return service_gpio.SetBladeAttentionLEDOn(bladeId)
 
-def SetBladeAttentionLEDOn(bladeId):
-    response = etree.Element('BladeResponse')
-    etree.SubElement(response, 'CompletionCode').text = 'Success'
-    etree.SubElement(response, 'statusDescription').text = ''
-    etree.SubElement(response, 'apiVersion').text = '1'
-    etree.SubElement(response, 'bladeNumber').text = bladeId
-    return etree.tostring(response, pretty_print=True)
+@mock.patch('service_gpio.GPIO.output')
+def SetAllBladesAttentionLEDOn(mock_gpio_output):
+    return service_gpio.SetAllBladesAttentionLEDOn()
 
-def SetAllBladesAttentionLEDOn():
-    response = etree.Element('AllBladesResponse')
-    for bladeId in AttentionLEDTable:
-        blade = etree.SubElement(response, 'BladeResponse')
-        etree.SubElement(blade, 'CompletionCode').text = 'Success'
-        etree.SubElement(blade, 'statusDescription').text = ''
-        etree.SubElement(blade, 'apiVersion').text = '1'
-        etree.SubElement(blade, 'bladeNumber').text = bladeId
-    return etree.tostring(response, pretty_print=True)
+@mock.patch('service_gpio.GPIO.output')
+def SetBladeAttentionLEDOff(bladeId, mock_gpio_output):
+    return service_gpio.SetBladeAttentionLEDOff(bladeId)
 
-def SetBladeAttentionLEDOff(bladeId):
-    response = etree.Element('BladeResponse')
-    etree.SubElement(response, 'CompletionCode').text = 'Success'
-    etree.SubElement(response, 'statusDescription').text = ''
-    etree.SubElement(response, 'apiVersion').text = '1'
-    etree.SubElement(response, 'bladeNumber').text = bladeId
-    return etree.tostring(response, pretty_print=True)
+@mock.patch('service_gpio.GPIO.output')
+def SetAllBladesAttentionLEDOff(mock_gpio_output):
+    return service_gpio.SetAllBladesAttentionLEDOff()
 
-def SetAllBladesAttentionLEDOff():
-    response = etree.Element('AllBladesResponse')
-    for bladeId in AttentionLEDTable:
-        blade = etree.SubElement(response, 'BladeResponse')
-        etree.SubElement(blade, 'CompletionCode').text = 'Success'
-        etree.SubElement(blade, 'statusDescription').text = ''
-        etree.SubElement(blade, 'apiVersion').text = '1'
-        etree.SubElement(blade, 'bladeNumber').text = bladeId
-    return etree.tostring(response, pretty_print=True)
-
-def GetAllPowerState():
-    response = etree.Element('GetAllPowerStateResponse')
-    for bladeId in PowerTable:
-        power = etree.SubElement(response, 'PowerStateResponse')
-        blade = etree.SubElement(power, 'bladeResponse')
-        etree.SubElement(blade, 'CompletionCode').text = 'Success'
-        etree.SubElement(blade, 'statusDescription').text = ''
-        etree.SubElement(blade, 'apiVersion').text = '1'
-        etree.SubElement(blade, 'bladeNumber').text = bladeId
-        etree.SubElement(power, 'powerState').text = PowerState[ bladeId ]
-    return etree.tostring(response, pretty_print=True)
-
-
+@mock.patch('service_gpio.GetAllPowerState._GetPowerState')
+def GetAllPowerState(mock_get_powerstate):
+    mock_get_powerstate.side_effect = PowerState.values()
+    return service_gpio.GetAllPowerState()
